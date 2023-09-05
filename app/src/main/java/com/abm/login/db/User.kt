@@ -1,0 +1,19 @@
+package com.abm.login.db
+
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+
+@Entity(tableName = "user_data_table")
+data class User(
+    @PrimaryKey
+    val id: Int,
+    val email: String,
+    val password: String?,
+    val loginType: LoginType
+)
+
+enum class LoginType {
+    LOCAL, KAKAO
+}
