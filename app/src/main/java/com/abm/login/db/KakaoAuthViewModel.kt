@@ -3,7 +3,9 @@ package com.abm.login.db
 import android.app.Application
 import android.content.ContentValues
 import android.content.ContentValues.TAG
+import android.content.SharedPreferences
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.kakao.sdk.auth.model.OAuthToken
@@ -19,10 +21,12 @@ class KakaoAuthViewModel(application: Application) : AndroidViewModel(applicatio
     val userId = MutableLiveData<Long?>()
 
     fun handleKakaoLogin(){
+        val sharedPreference = context.getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
+        val editor: SharedPreferences.Editor = sharedPreference.edit()
         // 로그인 조합 예제
 
-// 카카오계정으로 로그인 공통 callback 구성
-// 카카오톡으로 로그인 할 수 없어 카카오계정으로 로그인할 경우 사용됨
+        // 카카오계정으로 로그인 공통 callback 구성
+        // 카카오톡으로 로그인 할 수 없어 카카오계정으로 로그인할 경우 사용됨
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if (error != null) {
                 Log.e("MYTAG", "카카오계정으로 로그인 실패", error)
@@ -90,7 +94,10 @@ class KakaoAuthViewModel(application: Application) : AndroidViewModel(applicatio
                                 "\n회원번호: ${user.id}" +
                                 "\n이메일: ${user.kakaoAccount?.email}")
                         userId.value = user.id
+                        editor.putString("id","${user.id}")
                         userEmail.value = user.kakaoAccount?.email
+                        editor.putString("email","${user.kakaoAccount?.email}")
+                        editor.apply() // data 저장
                     }
                 }
             }

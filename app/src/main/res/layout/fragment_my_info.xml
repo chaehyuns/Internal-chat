@@ -57,7 +57,7 @@
             android:gravity="center"
             android:text="홈으로"
             android:textColor="@color/black"
-            android:textSize="13dp"
+            android:textSize="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
