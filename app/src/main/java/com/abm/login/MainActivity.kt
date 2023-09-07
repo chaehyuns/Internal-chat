@@ -30,12 +30,15 @@ class MainActivity : AppCompatActivity() {
         val factory = UserViewModelFactory(repository)
         val userViewModel = ViewModelProvider(this,factory).get(UserViewModel::class.java)
 
-//        userViewModel.deleteAll()
-
         binding.kakaoRegisterViewModel = kakaoAuthViewModel
         binding.btnKakaoLogin.setOnClickListener{
             kakaoAuthViewModel.handleKakaoLogin()
 
+        }
+
+        binding.btnSignUp.setOnClickListener {
+            val intent = Intent(this, SignUpActivity::class.java)
+            startActivity(intent)
         }
 
         kakaoAuthViewModel.accessToken.observe(this) {
@@ -48,8 +51,10 @@ class MainActivity : AppCompatActivity() {
         kakaoAuthViewModel.userId.observe(this) {
             it?.let { id ->
                 userViewModel.id = id.toLong()
+                editor.putString("id","${id}")
+                editor.apply() // data 저장
                 userViewModel.email = sharedPreference.getString("email","").toString()
-//                Log.d("저장 확", "id is ${id} email is ${sharedPreference.getString("email","")}")
+//                Log.d("저장 확인", "id is ${id} email is ${sharedPreference.getString("email","")}")
                 userViewModel.password = "kakao"
                 userViewModel.insertKakaoUser()
             } ?: run {
