@@ -8,14 +8,20 @@ import kotlinx.coroutines.launch
 
 class UserViewModel(private val repository: UserRepository) : ViewModel() {
     val users = repository.users
+    var id : Long = 0
     lateinit var email : String
     lateinit var password : String
 
 
 
-    fun insertUser(){
+    fun insertLocalUser(){
         viewModelScope.launch (Dispatchers.IO){
-            repository.insert(User(0,email,password, LoginType.LOCAL))
+            repository.insert(User(id,email,password, LoginType.LOCAL))
+        }
+    }
+    fun insertKakaoUser(){
+        viewModelScope.launch (Dispatchers.IO){
+            repository.insert(User(id,email,password, LoginType.KAKAO))
         }
     }
 

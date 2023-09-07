@@ -1,20 +1,19 @@
 package com.abm.login
 
-import android.content.ContentValues
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import com.abm.login.databinding.ActivityMainBinding
-import com.kakao.sdk.auth.model.OAuthToken
-import com.kakao.sdk.common.model.AuthErrorCause
-import com.kakao.sdk.common.util.Utility
-import com.kakao.sdk.user.UserApiClient
+import com.abm.login.db.*
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var kakaoAuthViewModel: KakaoAuthViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,69 +21,52 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        /** Hash값 **/
-        val keyHash = Utility.getKeyHash(this)
-        Log.d("Hash", keyHash)
+        val sharedPreference = getSharedPreferences("user", MODE_PRIVATE)
+        val editor  : SharedPreferences.Editor = sharedPreference.edit()
 
-        /** 로그인 정보 확인 **/
-        UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
-            if (error != null) {
-                Log.e("토큰 정보 보기 실패", "error")
-            } else if(tokenInfo != null) {
-                Toast.makeText(this, "토큰 정보 보기 성공", Toast.LENGTH_SHORT).show()
+        kakaoAuthViewModel = ViewModelProvider(this).get(KakaoAuthViewModel::class.java)
+        val dao = UserDatabase.getInstance(this).userDAO
+        val repository= UserRepository(dao)
+        val factory = UserViewModelFactory(repository)
+        val userViewModel = ViewModelProvider(this,factory).get(UserViewModel::class.java)
+
+//        userViewModel.deleteAll()
+
+        binding.kakaoRegisterViewModel = kakaoAuthViewModel
+        binding.btnKakaoLogin.setOnClickListener{
+            kakaoAuthViewModel.handleKakaoLogin()
+
+        }
+
+        kakaoAuthViewModel.accessToken.observe(this) {
+            Log.d("MYTAG", "token is ${it}")
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+
+        }
+
+        kakaoAuthViewModel.userId.observe(this) {
+            it?.let { id ->
+                userViewModel.id = id.toLong()
+                userViewModel.email = sharedPreference.getString("email","").toString()
+//                Log.d("저장 확", "id is ${id} email is ${sharedPreference.getString("email","")}")
+                userViewModel.password = "kakao"
+                userViewModel.insertKakaoUser()
+            } ?: run {
+                // Handle null email
+                Toast.makeText(this, "회원번호를 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
             }
         }
 
-        /** 카카오 로그인 에러처리 **/
-        val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
-            if (error != null) {
-                when {
-                    error.toString() == AuthErrorCause.AccessDenied.toString() -> {
-                        Toast.makeText(this, "접근이 거부 됨(동의 취소)", Toast.LENGTH_SHORT).show()
-                    }
-                    error.toString() == AuthErrorCause.InvalidClient.toString() -> {
-                        Toast.makeText(this, "유효하지 않은 앱", Toast.LENGTH_SHORT).show()
-                    }
-                    error.toString() == AuthErrorCause.InvalidGrant.toString() -> {
-                        Toast.makeText(this, "인증 수단이 유효하지 않아 인증할 수 없는 상태", Toast.LENGTH_SHORT)
-                            .show()
-                    }
-                    error.toString() == AuthErrorCause.InvalidRequest.toString() -> {
-                        Toast.makeText(this, "요청 파라미터 오류", Toast.LENGTH_SHORT).show()
-                    }
-                    error.toString() == AuthErrorCause.InvalidScope.toString() -> {
-                        Toast.makeText(this, "유효하지 않은 scope ID", Toast.LENGTH_SHORT).show()
-                    }
-                    error.toString() == AuthErrorCause.Misconfigured.toString() -> {
-                        Toast.makeText(this, "설정이 올바르지 않음(android key hash)", Toast.LENGTH_SHORT)
-                            .show()
-                    }
-                    error.toString() == AuthErrorCause.ServerError.toString() -> {
-                        Toast.makeText(this, "서버 내부 에러", Toast.LENGTH_SHORT).show()
-                    }
-                    error.toString() == AuthErrorCause.Unauthorized.toString() -> {
-                        Toast.makeText(this, "앱이 요청 권한이 없음", Toast.LENGTH_SHORT).show()
-                    }
-                    else -> { // Unknown
-                        Toast.makeText(this, "기타 에러", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            } else if (token != null) {
-                Toast.makeText(this, "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this, HomeActivity::class.java)
-                startActivity(intent)
-                Log.i(ContentValues.TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
+        kakaoAuthViewModel.userEmail.observe(this) {
+            it?.let { email ->
+                editor.putString("email","${email}")
+                editor.apply() // data 저장
+            } ?: run {
+                // Handle null email
+                Toast.makeText(this, "이메일을 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
             }
         }
 
-        /** Callback **/
-
-        binding.btnKakaoLogin.setOnClickListener {
-            if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
-                UserApiClient.instance.loginWithKakaoTalk(this, callback = callback)
-            } else {
-                UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
-            }
-        }
     }
 }
