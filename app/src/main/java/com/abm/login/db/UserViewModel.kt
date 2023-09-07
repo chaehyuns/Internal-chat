@@ -11,17 +11,12 @@ class UserViewModel(private val repository: UserRepository) : ViewModel() {
     var id : Long = 0
     lateinit var email : String
     lateinit var password : String
+    var loginType : LoginType = LoginType.LOCAL
 
 
-
-    fun insertLocalUser(){
+    fun insertUser(){
         viewModelScope.launch (Dispatchers.IO){
-            repository.insert(User(id,email,password, LoginType.LOCAL))
-        }
-    }
-    fun insertKakaoUser(){
-        viewModelScope.launch (Dispatchers.IO){
-            repository.insert(User(id,email,password, LoginType.KAKAO))
+            repository.insert(User(id,email,password, loginType))
         }
     }
 

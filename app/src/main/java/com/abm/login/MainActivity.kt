@@ -1,10 +1,13 @@
 package com.abm.login
 
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.abm.login.databinding.ActivityMainBinding
@@ -22,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val sharedPreference = getSharedPreferences("user", MODE_PRIVATE)
-        val editor  : SharedPreferences.Editor = sharedPreference.edit()
+        val editor : SharedPreferences.Editor = sharedPreference.edit()
 
         kakaoAuthViewModel = ViewModelProvider(this).get(KakaoAuthViewModel::class.java)
         val dao = UserDatabase.getInstance(this).userDAO
@@ -51,27 +54,33 @@ class MainActivity : AppCompatActivity() {
         kakaoAuthViewModel.userId.observe(this) {
             it?.let { id ->
                 userViewModel.id = id.toLong()
-                editor.putString("id","${id}")
-                editor.apply() // data 저장
-                userViewModel.email = sharedPreference.getString("email","").toString()
-//                Log.d("저장 확인", "id is ${id} email is ${sharedPreference.getString("email","")}")
+                var userEmail = sharedPreference.getString("email","").toString()
+                userViewModel.email = userEmail
+                userViewModel.loginType = LoginType.KAKAO
+                Log.d("저장 확인", "id is ${id} email is ${userEmail}")
                 userViewModel.password = "kakao"
-                userViewModel.insertKakaoUser()
+
+                userViewModel.insertUser()
             } ?: run {
                 // Handle null email
                 Toast.makeText(this, "회원번호를 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
             }
         }
 
-        kakaoAuthViewModel.userEmail.observe(this) {
-            it?.let { email ->
-                editor.putString("email","${email}")
-                editor.apply() // data 저장
-            } ?: run {
-                // Handle null email
-                Toast.makeText(this, "이메일을 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
-            }
-        }
+//        kakaoAuthViewModel.userEmail.observe(this) {
+//            it?.let { email ->
+//                editor.putString("email","${email}")
+//                editor.apply() // data 저장
+//            } ?: run {
+//                // Handle null email
+//                Toast.makeText(this, "이메일을 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
+//            }
+//        }
 
+    }
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+        return true
     }
 }
