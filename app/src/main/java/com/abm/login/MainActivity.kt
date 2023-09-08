@@ -68,6 +68,36 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "카카오 로그인 정보를 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
             }
         }
+
+
+        //Local 로그인
+
+        binding.btnLogin.setOnClickListener {
+            val inputEmail = binding.userId.text.toString().trim()
+            val inputPassword = binding.userPw.text.toString().trim()
+
+            if (inputEmail.isEmpty() || inputPassword.isEmpty()) {
+                Toast.makeText(this, "이메일 또는 비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            userViewModel.login(inputEmail, inputPassword).observe(this) { user ->
+                if (user != null) {
+                    // 로그인 성공
+                    Toast.makeText(this, "로그인 성공!", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, HomeActivity::class.java)
+                    startActivity(intent)
+
+                } else {
+                    // 로그인 실패
+                    Toast.makeText(this, "이메일 또는 비밀번호가 잘못되었습니다.", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+
+
+
     }
     override fun onTouchEvent(event: MotionEvent): Boolean {
         val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
