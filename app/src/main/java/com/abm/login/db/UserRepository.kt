@@ -22,6 +22,10 @@ class UserRepository(private val dao: UserDAO) {
         return dao.getUserByEmail(email)
     }
 
+    fun getUserByEmailAndPassword(email: String, password: String): LiveData<User?> {
+        return dao.getUserByEmailAndPassword(email, password)
+    }
+
     // clear Users
     suspend fun logout() {
         dao.logout()

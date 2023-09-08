@@ -22,6 +22,9 @@ interface UserDAO {
     @Query("SELECT * FROM user_data_table WHERE email = :email")
     fun getUserByEmail(email: String): LiveData<User?>
 
+    @Query("SELECT * FROM user_data_table WHERE email = :email AND password = :password")
+    fun getUserByEmailAndPassword(email: String, password: String): LiveData<User?>
+
     @Query("DELETE FROM user_data_table")
     suspend fun logout()
 }

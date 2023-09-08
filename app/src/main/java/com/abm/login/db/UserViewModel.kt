@@ -37,4 +37,8 @@ class UserViewModel(private val repository: UserRepository) : ViewModel() {
         return repository.getUserByEmail(email)
     }
 
+    fun login(email: String, password: String): LiveData<User?> {
+        return repository.getUserByEmailAndPassword(email, password)
+    }
+
 }
