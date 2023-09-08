@@ -52,7 +52,7 @@ class SignUpActivity : AppCompatActivity() {
                             Toast.makeText(this, "이미 가입된 이메일 입니다.", Toast.LENGTH_SHORT).show()
 
                         } else {
-                            Toast.makeText(this, "회원가입 성공", Toast.LENGTH_SHORT).show()
+                            //회원가입 성공
                             userViewModel.email = inputEmail
                             userViewModel.password = inputPassword
                             userViewModel.loginType = LoginType.LOCAL
@@ -60,7 +60,6 @@ class SignUpActivity : AppCompatActivity() {
 
                             saveUserDataToPreferences(inputEmail)
 
-                            //회원가입 성공
                             Toast.makeText(this, "회원가입에 성공했습니다!", Toast.LENGTH_SHORT).show()
                             val intent = Intent(this, MainActivity::class.java)
                             startActivity(intent)

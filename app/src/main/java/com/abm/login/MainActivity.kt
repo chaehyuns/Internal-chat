@@ -84,6 +84,9 @@ class MainActivity : AppCompatActivity() {
             userViewModel.login(inputEmail, inputPassword).observe(this) { user ->
                 if (user != null) {
                     // 로그인 성공
+                    editor.putString("id", "${user.id}")
+                    editor.putString("email", inputEmail)
+                    editor.apply()
                     Toast.makeText(this, "로그인 성공!", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, HomeActivity::class.java)
                     startActivity(intent)

@@ -21,7 +21,7 @@ class MyInfoFragment : Fragment() {
     ): View? {
         binding = FragmentMyInfoBinding.inflate(inflater, container, false)
 
-        Toast.makeText(activity, "MyInfoFragment", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(activity, "MyInfoFragment", Toast.LENGTH_SHORT).show()
 
         val sharedPreference = activity?.getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
         val editor: SharedPreferences.Editor? = sharedPreference?.edit()
