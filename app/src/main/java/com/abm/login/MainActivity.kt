@@ -27,6 +27,9 @@ class MainActivity : AppCompatActivity() {
         val sharedPreference = getSharedPreferences("user", MODE_PRIVATE)
         val editor : SharedPreferences.Editor = sharedPreference.edit()
 
+        editor.clear()
+        editor.apply()
+
         kakaoAuthViewModel = ViewModelProvider(this).get(KakaoAuthViewModel::class.java)
         val dao = UserDatabase.getInstance(this).userDAO
         val repository= UserRepository(dao)
@@ -51,31 +54,20 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        kakaoAuthViewModel.userId.observe(this) {
-            it?.let { id ->
-                userViewModel.id = id.toLong()
-                var userEmail = sharedPreference.getString("email","").toString()
-                userViewModel.email = userEmail
+        //카카오 로그인 성공 시 유저 정보 저장 (live data 객체)
+        kakaoAuthViewModel.userDetail.observe(this) { detail ->
+            detail?.let {
+                userViewModel.id = detail.id!!
+                userViewModel.email = detail.email?:"email is null"
                 userViewModel.loginType = LoginType.KAKAO
-                Log.d("저장 확인", "id is ${id} email is ${userEmail}")
+                Log.d("저장 확인", "id is ${userViewModel.id} email is ${userViewModel.email}")
                 userViewModel.password = "kakao"
-
                 userViewModel.insertUser()
-            } ?: run {
+            }?: run {
                 // Handle null email
-                Toast.makeText(this, "회원번호를 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "카카오 로그인 정보를 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
             }
         }
-
-//        kakaoAuthViewModel.userEmail.observe(this) {
-//            it?.let { email ->
-//                editor.putString("email","${email}")
-//                editor.apply() // data 저장
-//            } ?: run {
-//                // Handle null email
-//                Toast.makeText(this, "이메일을 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
-//            }
-//        }
 
     }
     override fun onTouchEvent(event: MotionEvent): Boolean {

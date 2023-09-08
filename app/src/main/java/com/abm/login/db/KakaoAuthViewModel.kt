@@ -17,8 +17,7 @@ class KakaoAuthViewModel(application: Application) : AndroidViewModel(applicatio
 
     private val context = application.applicationContext
     val accessToken = MutableLiveData<String?>()
-    val userEmail = MutableLiveData<String?>()
-    val userId = MutableLiveData<Long?>()
+    val userDetail = MutableLiveData<UserDetail>()
 
     fun handleKakaoLogin(){
         val sharedPreference = context.getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
@@ -83,21 +82,16 @@ class KakaoAuthViewModel(application: Application) : AndroidViewModel(applicatio
                     }
                 }
 
-
+                // userDetail LiveData를 관찰
                 UserApiClient.instance.me { user, error ->
                     if (error != null) {
                         Log.e(ContentValues.TAG, "사용자 정보 요청 실패", error)
-                    }
-                    else if (user != null) {
-                        Log.i(
-                            ContentValues.TAG, "사용자 정보 요청 성공" +
-                                "\n회원번호: ${user.id}" +
-                                "\n이메일: ${user.kakaoAccount?.email}")
-                        userId.value = user.id
+                    } else if (user != null) {
+                        userDetail.value = UserDetail(user.id, user.kakaoAccount?.email)
+                        // data 저장
                         editor.putString("id","${user.id}")
-                        userEmail.value = user.kakaoAccount?.email
                         editor.putString("email","${user.kakaoAccount?.email}")
-                        editor.apply() // data 저장
+                        editor.apply()
                     }
                 }
             }
