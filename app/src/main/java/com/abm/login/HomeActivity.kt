@@ -1,5 +1,6 @@
 package com.abm.login
 
+import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -46,6 +47,15 @@ class HomeActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.frm, MyInfoFragment())
                 .commitAllowingStateLoss()
+        }
+
+        binding.btnLogout.setOnClickListener {
+            Toast.makeText(this, "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show()
+            editor.clear()
+            editor.apply()
+            finish()
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
 
 

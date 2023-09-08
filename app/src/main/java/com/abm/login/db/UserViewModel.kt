@@ -33,5 +33,8 @@ class UserViewModel(private val repository: UserRepository) : ViewModel() {
         }
     }
 
+    fun getUserByEmail(email: String): LiveData<User?> {
+        return repository.getUserByEmail(email)
+    }
 
 }

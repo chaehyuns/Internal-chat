@@ -89,8 +89,10 @@ class KakaoAuthViewModel(application: Application) : AndroidViewModel(applicatio
                     } else if (user != null) {
                         userDetail.value = UserDetail(user.id, user.kakaoAccount?.email)
                         // data 저장
-                        editor.putString("id","${user.id}")
-                        editor.putString("email","${user.kakaoAccount?.email}")
+                        val sharedPreference = context.getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
+                        val editor: SharedPreferences.Editor = sharedPreference.edit()
+                        editor.putString("id", "${user.id}")
+                        editor.putString("email", "${user.kakaoAccount?.email}")
                         editor.apply()
                     }
                 }
