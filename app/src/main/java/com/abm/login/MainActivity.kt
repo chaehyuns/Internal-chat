@@ -24,6 +24,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //추후 서버와 연결
+
         val sharedPreference = getSharedPreferences("user", MODE_PRIVATE)
         val editor : SharedPreferences.Editor = sharedPreference.edit()
 
@@ -71,7 +73,6 @@ class MainActivity : AppCompatActivity() {
 
 
         //Local 로그인
-
         binding.btnLogin.setOnClickListener {
             val inputEmail = binding.userId.text.toString().trim()
             val inputPassword = binding.userPw.text.toString().trim()
@@ -97,10 +98,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
-
-
-
     }
     override fun onTouchEvent(event: MotionEvent): Boolean {
         val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

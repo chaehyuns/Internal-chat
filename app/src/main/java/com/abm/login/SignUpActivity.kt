@@ -45,14 +45,16 @@ class SignUpActivity : AppCompatActivity() {
                 inputPassword.isBlank() -> {
                     Toast.makeText(this, "비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
                 }
+                !inputEmail.isEmailValid() -> { // 이메일 형식 확인
+                    Toast.makeText(this, "유효한 이메일 형식이 아닙니다.", Toast.LENGTH_SHORT).show()
+                }
                 else -> {
                     userViewModel.getUserByEmail(inputEmail).observe(this) { user ->
                         if (user != null) {
                             // 이메일 이미 데이터베이스에 존재
                             Toast.makeText(this, "이미 가입된 이메일 입니다.", Toast.LENGTH_SHORT).show()
-
                         } else {
-                            //회원가입 성공
+                            // 회원가입 성공
                             userViewModel.email = inputEmail
                             userViewModel.password = inputPassword
                             userViewModel.loginType = LoginType.LOCAL
@@ -68,6 +70,12 @@ class SignUpActivity : AppCompatActivity() {
                 }
             }
         }
+
+    }
+
+    fun String.isEmailValid(): Boolean {
+        val emailRegex = Regex("^[A-Za-z](.*)([@]{1})(.{1,})(\\.)(.{1,})")
+        return emailRegex.matches(this)
     }
 
     private fun setupViewModel() {
