@@ -24,8 +24,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //추후 서버와 연결
-
         val sharedPreference = getSharedPreferences("user", MODE_PRIVATE)
         val editor : SharedPreferences.Editor = sharedPreference.edit()
 
@@ -39,28 +37,25 @@ class MainActivity : AppCompatActivity() {
         val userViewModel = ViewModelProvider(this,factory).get(UserViewModel::class.java)
 
         binding.kakaoRegisterViewModel = kakaoAuthViewModel
-        binding.btnKakaoLogin.setOnClickListener{
-            kakaoAuthViewModel.handleKakaoLogin()
+        binding.lifecycleOwner = this
 
-        }
 
         binding.btnSignUp.setOnClickListener {
             val intent = Intent(this, SignUpActivity::class.java)
             startActivity(intent)
         }
 
+        //카카오 로그인 성공 시 유저 정보 저장 (live data 객체)
         kakaoAuthViewModel.accessToken.observe(this) {
-            Log.d("MYTAG", "token is ${it}")
+//            Log.d("MYTAG", "token is ${it}")
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
-
         }
 
-        //카카오 로그인 성공 시 유저 정보 저장 (live data 객체)
         kakaoAuthViewModel.userDetail.observe(this) { detail ->
             detail?.let {
                 userViewModel.id = detail.id!!
-                userViewModel.email = detail.email?:"email is null"
+                userViewModel.email = detail.email?:"email i s null"
                 userViewModel.loginType = LoginType.KAKAO
                 Log.d("저장 확인", "id is ${userViewModel.id} email is ${userViewModel.email}")
                 userViewModel.password = "kakao"
@@ -70,7 +65,6 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "카카오 로그인 정보를 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
             }
         }
-
 
         //Local 로그인
         binding.btnLogin.setOnClickListener {
@@ -99,6 +93,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    // 키보드 숨기기
     override fun onTouchEvent(event: MotionEvent): Boolean {
         val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
