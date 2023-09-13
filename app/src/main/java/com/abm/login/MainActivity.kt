@@ -1,5 +1,6 @@
 package com.abm.login
 
+import KakaoAuthRepository
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -30,7 +31,11 @@ class MainActivity : AppCompatActivity() {
         editor.clear()
         editor.apply()
 
-        kakaoAuthViewModel = ViewModelProvider(this).get(KakaoAuthViewModel::class.java)
+        val kakaoAuthRepository = KakaoAuthRepository(this)
+        val kakaoAuthViewModelFactory = KakaoAuthViewModelFactory(this.application, kakaoAuthRepository)
+        kakaoAuthViewModel = ViewModelProvider(this, kakaoAuthViewModelFactory).get(KakaoAuthViewModel::class.java)
+
+
         val dao = UserDatabase.getInstance(this).userDAO
         val repository= UserRepository(dao)
         val factory = UserViewModelFactory(repository)
