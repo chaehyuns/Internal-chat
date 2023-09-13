@@ -59,14 +59,11 @@ dependencies {
     implementation "com.kakao.sdk:v2-user:2.13.0" // 카카오 로그인
 
     // roomDB
-    def room_version = "2.4.3"
     implementation "androidx.room:room-ktx:$room_version"
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
-    //lifecycle
-    def lifecycle_version = "2.6.0-alpha03"
-    // ViewModel
+    // ViewModeldd
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     // LiveData
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
@@ -78,4 +75,8 @@ dependencies {
     // Preferences Data Store
     implementation "androidx.datastore:datastore-preferences:1.0.0"
     implementation "androidx.datastore:datastore-core:1.0.0"
+
+    //navigation graph
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 }
