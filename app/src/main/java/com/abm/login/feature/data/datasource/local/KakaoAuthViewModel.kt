@@ -1,18 +1,9 @@
-package com.abm.login.db
+package com.abm.login.feature.data.datasource.local
 
-import KakaoAuthRepository
+import com.abm.login.feature.data.repository.KakaoAuthRepository
 import android.app.Application
-import android.content.ContentValues
-import android.content.ContentValues.TAG
-import android.content.SharedPreferences
-import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import com.kakao.sdk.auth.model.OAuthToken
-import com.kakao.sdk.common.model.ClientError
-import com.kakao.sdk.common.model.ClientErrorCause
-import com.kakao.sdk.user.UserApiClient
 
 class KakaoAuthViewModel(application: Application, private val kakaoAuthRepository: KakaoAuthRepository) : AndroidViewModel(application) {
 

@@ -1,4 +1,4 @@
-package com.abm.login
+package com.abm.login.feature.ui
 
 import android.content.Intent
 import android.content.SharedPreferences
@@ -7,12 +7,12 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import com.abm.login.R
 import com.abm.login.databinding.ActivityHomeBinding
-import com.abm.login.databinding.ActivityMainBinding
-import com.abm.login.db.UserDatabase
-import com.abm.login.db.UserRepository
-import com.abm.login.db.UserViewModel
-import com.abm.login.db.UserViewModelFactory
+import com.abm.login.feature.data.datasource.local.UserDatabase
+import com.abm.login.feature.data.datasource.local.UserRepository
+import com.abm.login.feature.data.datasource.local.UserViewModel
+import com.abm.login.feature.data.datasource.local.UserViewModelFactory
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding

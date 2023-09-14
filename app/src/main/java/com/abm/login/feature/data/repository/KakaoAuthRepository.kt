@@ -1,6 +1,8 @@
+package com.abm.login.feature.data.repository
+
 import android.content.Context
 import android.content.SharedPreferences
-import com.abm.login.db.UserDetail
+import com.abm.login.feature.data.datasource.local.UserDetail
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
 
