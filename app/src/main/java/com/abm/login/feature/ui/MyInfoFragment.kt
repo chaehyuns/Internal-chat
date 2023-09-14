@@ -1,4 +1,4 @@
-package com.abm.login
+package com.abm.login.feature.ui
 
 import android.content.SharedPreferences
 import android.os.Bundle

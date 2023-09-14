@@ -1,6 +1,6 @@
-package com.abm.login
+package com.abm.login.feature.ui
 
-import KakaoAuthRepository
+import com.abm.login.feature.data.repository.KakaoAuthRepository
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -11,8 +11,10 @@ import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import com.abm.login.R
 import com.abm.login.databinding.ActivityMainBinding
-import com.abm.login.db.*
+import com.abm.login.feature.data.datasource.local.*
+import com.abm.login.feature.data.factory.KakaoAuthViewModelFactory
 
 class MainActivity : AppCompatActivity() {
 
@@ -33,7 +35,8 @@ class MainActivity : AppCompatActivity() {
 
         val kakaoAuthRepository = KakaoAuthRepository(this)
         val kakaoAuthViewModelFactory = KakaoAuthViewModelFactory(this.application, kakaoAuthRepository)
-        kakaoAuthViewModel = ViewModelProvider(this, kakaoAuthViewModelFactory).get(KakaoAuthViewModel::class.java)
+        kakaoAuthViewModel = ViewModelProvider(this, kakaoAuthViewModelFactory).get(
+            KakaoAuthViewModel::class.java)
 
 
         val dao = UserDatabase.getInstance(this).userDAO

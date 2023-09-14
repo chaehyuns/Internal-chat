@@ -1,6 +1,6 @@
 package com.abm.login.core.base
 
-open class Event<out T>(private val content: T) {
+open class Event<out T>(private val content: T) { //상용구
 
     var hasBeenHandled = false
         private set

@@ -1,10 +1,10 @@
-package com.abm.login
+package com.abm.login.feature.data.factory
 
-import KakaoAuthRepository
+import com.abm.login.feature.data.repository.KakaoAuthRepository
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.abm.login.db.KakaoAuthViewModel
+import com.abm.login.feature.data.datasource.local.KakaoAuthViewModel
 
 class KakaoAuthViewModelFactory(
     private val application: Application,
