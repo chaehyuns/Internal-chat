@@ -4,11 +4,12 @@ import android.app.Application
 import com.kakao.sdk.common.KakaoSdk
 
 class GlobalApplication : Application() {
+    val KAKAO_API_KEY = BuildConfig.KAKAO_API_KEY
     companion object {
     }
     override fun onCreate() {
         super.onCreate()
-        KakaoSdk.init(this, "05b640b80be2d741cae452a978f6e671")
+        KakaoSdk.init(this, KAKAO_API_KEY)
 
     }
 }
