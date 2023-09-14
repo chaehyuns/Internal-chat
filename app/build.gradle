@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace 'com.abm.login'
+    namespace 'com.abm.chat'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.abm.login"
+        applicationId "com.abm.chat"
         minSdk 24
         targetSdk 33
         versionCode 1

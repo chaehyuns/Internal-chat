@@ -6,7 +6,7 @@
     <data>
         <variable
             name="kakaoRegisterViewModel"
-            type="com.abm.login.feature.data.datasource.local.KakaoAuthViewModel"
+            type="com.abm.chat.feature.data.datasource.local.KakaoAuthViewModel"
             />
     </data>
 
