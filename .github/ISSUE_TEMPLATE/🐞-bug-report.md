@@ -1,6 +1,6 @@
 ---
 name: "\U0001F41E Bug report"
-about: 버그 발생 시 사용하는 템플릿입니다
+about: 버그 발생 내용을 작성해주세요.
 title: ''
 labels: ''
 assignees: ''
