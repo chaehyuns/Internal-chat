@@ -4,5 +4,6 @@ import com.abm.chat.BuildConfig
 
 object Constants {
     const val KAKAO_API_KEY = BuildConfig.KAKAO_API_KEY
-//    const val BASE_URL = "http://3.39.186.220:8080/"
+    const val BASE_URL = BuildConfig.BASE_URL
+    const val GOOGLE_CLIENT_ID = BuildConfig.GOOGLE_CLIENT_ID
 }
