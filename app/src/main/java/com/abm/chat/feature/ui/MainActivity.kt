@@ -1,6 +1,6 @@
 package com.abm.chat.feature.ui
 
-import com.abm.chat.feature.data.repository.KakaoAuthRepository
+import com.abm.chat.data.repository.user.KakaoAuthRepository
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -9,13 +9,14 @@ import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import com.abm.chat.R
 import com.abm.chat.core.Constants.GOOGLE_CLIENT_ID
 import com.abm.chat.core.Constants.NAVER_CLIENT_ID
 import com.abm.chat.core.Constants.NAVER_CLIENT_NAME
 import com.abm.chat.core.Constants.NAVER_CLIENT_SECRET
+import com.abm.chat.data.repository.user.datasource.local.*
 import com.abm.chat.databinding.ActivityMainBinding
-import com.abm.chat.feature.data.datasource.local.*
+import com.abm.chat.domain.repository.user.datasource.local.*
+import com.abm.chat.domain.usecase.repository.user.datasource.local.*
 import com.abm.chat.feature.data.factory.KakaoAuthViewModelFactory
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -73,7 +74,8 @@ class MainActivity : AppCompatActivity() {
     private fun setupViewModels() {
         val kakaoAuthRepository = KakaoAuthRepository(this)
         val kakaoAuthViewModelFactory = KakaoAuthViewModelFactory(this.application, kakaoAuthRepository)
-        kakaoAuthViewModel = ViewModelProvider(this, kakaoAuthViewModelFactory).get(KakaoAuthViewModel::class.java)
+        kakaoAuthViewModel = ViewModelProvider(this, kakaoAuthViewModelFactory).get(
+            KakaoAuthViewModel::class.java)
 
         val dao = UserDatabase.getInstance(this).userDAO
         val repository = UserRepository(dao)

@@ -9,10 +9,10 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.abm.chat.R
 import com.abm.chat.databinding.ActivityHomeBinding
-import com.abm.chat.feature.data.datasource.local.UserDatabase
-import com.abm.chat.feature.data.datasource.local.UserRepository
-import com.abm.chat.feature.data.datasource.local.UserViewModel
-import com.abm.chat.feature.data.datasource.local.UserViewModelFactory
+import com.abm.chat.data.repository.user.datasource.local.UserDatabase
+import com.abm.chat.data.repository.user.datasource.local.UserRepository
+import com.abm.chat.data.repository.user.datasource.local.UserViewModel
+import com.abm.chat.data.repository.user.datasource.local.UserViewModelFactory
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding

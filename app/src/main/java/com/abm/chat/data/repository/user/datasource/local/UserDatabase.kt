@@ -1,9 +1,10 @@
-package com.abm.chat.feature.data.datasource.local
+package com.abm.chat.data.repository.user.datasource.local
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.abm.chat.data.db.UserDAO
 
 
 @Database(entities = [User::class], version = 1)

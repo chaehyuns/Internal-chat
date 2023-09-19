@@ -1,4 +1,4 @@
-package com.abm.chat.feature.data.datasource.local
+package com.abm.chat.data.repository.user.datasource.local
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

@@ -1,8 +1,8 @@
-package com.abm.chat.feature.data.repository
+package com.abm.chat.data.repository.user
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.abm.chat.feature.data.datasource.local.UserDetail
+import com.abm.chat.data.repository.user.datasource.local.UserDetail
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
 

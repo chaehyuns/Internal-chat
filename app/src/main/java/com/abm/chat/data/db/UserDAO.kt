@@ -1,7 +1,8 @@
-package com.abm.chat.feature.data.datasource.local
+package com.abm.chat.data.db
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.abm.chat.data.repository.user.datasource.local.User
 
 
 @Dao

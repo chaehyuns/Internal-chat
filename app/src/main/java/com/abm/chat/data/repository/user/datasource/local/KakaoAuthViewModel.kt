@@ -1,6 +1,6 @@
-package com.abm.chat.feature.data.datasource.local
+package com.abm.chat.data.repository.user.datasource.local
 
-import com.abm.chat.feature.data.repository.KakaoAuthRepository
+import com.abm.chat.data.repository.user.KakaoAuthRepository
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData

@@ -1,10 +1,10 @@
 package com.abm.chat.feature.data.factory
 
-import com.abm.chat.feature.data.repository.KakaoAuthRepository
+import com.abm.chat.data.repository.user.KakaoAuthRepository
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.abm.chat.feature.data.datasource.local.KakaoAuthViewModel
+import com.abm.chat.data.repository.user.datasource.local.KakaoAuthViewModel
 
 class KakaoAuthViewModelFactory(
     private val application: Application,
