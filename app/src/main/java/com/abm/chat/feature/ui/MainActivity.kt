@@ -15,8 +15,6 @@ import com.abm.chat.core.Constants.NAVER_CLIENT_NAME
 import com.abm.chat.core.Constants.NAVER_CLIENT_SECRET
 import com.abm.chat.data.repository.user.datasource.local.*
 import com.abm.chat.databinding.ActivityMainBinding
-import com.abm.chat.domain.repository.user.datasource.local.*
-import com.abm.chat.domain.usecase.repository.user.datasource.local.*
 import com.abm.chat.feature.data.factory.KakaoAuthViewModelFactory
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
