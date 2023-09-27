@@ -10,9 +10,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.abm.chat.core.Constants.GOOGLE_CLIENT_ID
-import com.abm.chat.core.Constants.NAVER_CLIENT_ID
-import com.abm.chat.core.Constants.NAVER_CLIENT_NAME
-import com.abm.chat.core.Constants.NAVER_CLIENT_SECRET
 import com.abm.chat.data.repository.user.datasource.local.*
 import com.abm.chat.databinding.ActivityMainBinding
 import com.abm.chat.feature.data.factory.KakaoAuthViewModelFactory
@@ -20,11 +17,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.navercorp.nid.NaverIdLoginSDK
-import com.navercorp.nid.oauth.NidOAuthLogin
-import com.navercorp.nid.oauth.OAuthLoginCallback
-import com.navercorp.nid.profile.NidProfileCallback
-import com.navercorp.nid.profile.data.NidProfileResponse
 
 class MainActivity : AppCompatActivity() {
 
@@ -42,15 +34,6 @@ class MainActivity : AppCompatActivity() {
         setupViewModels()
         setupObservers()
         handleUserActions()
-        /** Naver Login Module Initialize */
-        val naverClientId = NAVER_CLIENT_ID
-        val naverClientSecret = NAVER_CLIENT_SECRET
-        val naverClientName = NAVER_CLIENT_NAME
-        NaverIdLoginSDK.initialize(this, naverClientId, naverClientSecret , naverClientName)
-
-        binding.naverLogin.setOnClickListener {
-            startNaverLogin()
-        }
     }
 
     private fun setupUI() {
@@ -192,57 +175,5 @@ class MainActivity : AppCompatActivity() {
         val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
         return true
-    }
-
-    /**
-     * 로그인
-     * authenticate() 메서드를 이용한 로그인 */
-    private fun startNaverLogin(){
-        var naverToken :String? = ""
-
-        val profileCallback = object : NidProfileCallback<NidProfileResponse> {
-            override fun onSuccess(response: NidProfileResponse) {
-                val userId = response.profile?.id
-//                binding.tvResult.text = "id: ${userId} \ntoken: ${naverToken}"
-//                setLayoutState(true)
-                Toast.makeText(this@MainActivity, "네이버 아이디 로그인 성공!", Toast.LENGTH_SHORT).show()
-            }
-            override fun onFailure(httpStatus: Int, message: String) {
-                val errorCode = NaverIdLoginSDK.getLastErrorCode().code
-                val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
-                Toast.makeText(this@MainActivity, "errorCode: ${errorCode}\n" +
-                        "errorDescription: ${errorDescription}", Toast.LENGTH_SHORT).show()
-            }
-            override fun onError(errorCode: Int, message: String) {
-                onFailure(errorCode, message)
-            }
-        }
-
-        /** OAuthLoginCallback을 authenticate() 메서드 호출 시 파라미터로 전달하거나 NidOAuthLoginButton 객체에 등록하면 인증이 종료되는 것을 확인할 수 있습니다. */
-        val oauthLoginCallback = object : OAuthLoginCallback {
-            override fun onSuccess() {
-                // 네이버 로그인 인증이 성공했을 때 수행할 코드 추가
-                naverToken = NaverIdLoginSDK.getAccessToken()
-//                var naverRefreshToken = NaverIdLoginSDK.getRefreshToken()
-//                var naverExpiresAt = NaverIdLoginSDK.getExpiresAt().toString()
-//                var naverTokenType = NaverIdLoginSDK.getTokenType()
-//                var naverState = NaverIdLoginSDK.getState().toString()
-
-                //로그인 유저 정보 가져오기
-                NidOAuthLogin().callProfileApi(profileCallback)
-                navigateToHome()
-            }
-            override fun onFailure(httpStatus: Int, message: String) {
-                val errorCode = NaverIdLoginSDK.getLastErrorCode().code
-                val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
-                Toast.makeText(this@MainActivity, "errorCode: ${errorCode}\n" +
-                        "errorDescription: ${errorDescription}", Toast.LENGTH_SHORT).show()
-            }
-            override fun onError(errorCode: Int, message: String) {
-                onFailure(errorCode, message)
-            }
-        }
-
-        NaverIdLoginSDK.authenticate(this, oauthLoginCallback)
     }
 }
