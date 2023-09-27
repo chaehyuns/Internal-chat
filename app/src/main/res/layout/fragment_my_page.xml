@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".feature.ui.MyPageFragment">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.abm.chat.feature.ui.MyPageViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <TextView
+            android:id="@+id/btnMyInfo"
+            android:layout_width="300dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="100dp"
+            android:background="@drawable/bg_button_gray"
+            android:gravity="center"
+            android:text="내 정보 보기"
+            android:textColor="@color/black"
+            android:textSize="14dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/btnDeleteAll"
+            android:layout_width="300dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/bg_button_gray"
+            android:gravity="center"
+            android:text="모든 회원 정보 지우기"
+            android:textSize="14dp"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnMyInfo"/>
+
+        <TextView
+            android:id="@+id/btnLogout"
+            android:layout_width="300dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/bg_button_gray"
+            android:gravity="center"
+            android:text="로그아웃"
+            android:textSize="14dp"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnDeleteAll"/>
+
+        <FrameLayout
+            android:id="@+id/frm"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.504"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.779" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
