@@ -9,12 +9,8 @@ import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import com.abm.chat.core.Constants.GOOGLE_CLIENT_ID
 import com.abm.chat.data.repository.user.datasource.local.*
 import com.abm.chat.databinding.ActivitySignUpBinding
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 
 class SignUpActivity : AppCompatActivity() {
 

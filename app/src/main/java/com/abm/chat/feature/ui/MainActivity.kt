@@ -9,24 +9,15 @@ import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import com.abm.chat.core.Constants.GOOGLE_CLIENT_ID
 import com.abm.chat.data.repository.user.datasource.local.*
 import com.abm.chat.databinding.ActivityMainBinding
 import com.abm.chat.feature.data.factory.KakaoAuthViewModelFactory
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var kakaoAuthViewModel: KakaoAuthViewModel
     private lateinit var userViewModel: UserViewModel
-
-    private val googleSignInClient: GoogleSignInClient by lazy {
-        setupGoogleSignInClient()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,25 +34,15 @@ class MainActivity : AppCompatActivity() {
         clearUserPreferences()
     }
 
-    private fun setupGoogleSignInClient(): GoogleSignInClient {
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestEmail()
-            .requestIdToken(GOOGLE_CLIENT_ID)
-            .build()
-
-        return GoogleSignIn.getClient(this, gso)
-    }
-
     private fun setupViewModels() {
         val kakaoAuthRepository = KakaoAuthRepository(this)
         val kakaoAuthViewModelFactory = KakaoAuthViewModelFactory(this.application, kakaoAuthRepository)
-        kakaoAuthViewModel = ViewModelProvider(this, kakaoAuthViewModelFactory).get(
-            KakaoAuthViewModel::class.java)
+        kakaoAuthViewModel = ViewModelProvider(this, kakaoAuthViewModelFactory)[KakaoAuthViewModel::class.java]
 
         val dao = UserDatabase.getInstance(this).userDAO
         val repository = UserRepository(dao)
         val factory = UserViewModelFactory(repository)
-        userViewModel = ViewModelProvider(this, factory).get(UserViewModel::class.java)
+        userViewModel = ViewModelProvider(this, factory)[UserViewModel::class.java]
 
         binding.kakaoRegisterViewModel = kakaoAuthViewModel
         binding.lifecycleOwner = this
@@ -90,10 +71,6 @@ class MainActivity : AppCompatActivity() {
             performLocalLogin()
         }
 
-        binding.googleLogin.setOnClickListener {
-            val signInIntent = googleSignInClient.signInIntent
-            startActivityForResult(signInIntent, RC_SIGN_IN)
-        }
     }
 
     private fun clearUserPreferences() {
@@ -145,32 +122,7 @@ class MainActivity : AppCompatActivity() {
         userViewModel.insertUser()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == RC_SIGN_IN) {
-            handleGoogleSignInResult(data)
-        }
-    }
-
-    private fun handleGoogleSignInResult(data: Intent?) {
-        val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-        try {
-            val account = task.getResult(ApiException::class.java)
-            navigateToHome()
-            account?.email?.let {
-                //Save email
-            }
-        } catch (e: ApiException) {
-            navigateToHome()
-            //Toast.makeText(this, "구글 로그인에 실패했습니다.", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    companion object {
-        private const val RC_SIGN_IN = 9001
-    }
-
+    //키보드 숨기기
     override fun onTouchEvent(event: MotionEvent): Boolean {
         val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
